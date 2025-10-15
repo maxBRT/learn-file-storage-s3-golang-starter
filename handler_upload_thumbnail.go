@@ -80,8 +80,10 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 	}
 	defer destFile.Close()
 
-	if _, err := io.Copy(destFile, file); err != nil {
+	_, err = io.Copy(destFile, file)
+	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "error", err)
+		return
 	}
 
 	tURL := fmt.Sprintf("http://localhost:%v/assets/%v", cfg.port, fileName)
